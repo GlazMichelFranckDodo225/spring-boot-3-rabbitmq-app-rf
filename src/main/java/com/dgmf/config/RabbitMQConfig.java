@@ -1,5 +1,7 @@
 package com.dgmf.config;
 
+import org.springframework.amqp.core.Binding;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +14,8 @@ public class RabbitMQConfig {
     private String queue;
     @Value("${rabbitmq.exchange.name}")
     private String exchange;
+    @Value("${rabbitmq.routing.key}")
+    private String routingKey;
 
     // Spring Bean for RabbitMQ Queue
     @Bean
@@ -19,8 +23,17 @@ public class RabbitMQConfig {
         return new Queue(queue);
     }
 
+    // Spring Bean for RabbitMQ Exchange
     @Bean
     public TopicExchange exchange() {
         return new TopicExchange(exchange);
+    }
+    // Binding between "queue()" and "exchange()" using "Routing Key"
+    @Bean
+    public Binding binding() {
+        return BindingBuilder
+                .bind(queue())
+                .to(exchange())
+                .with(routingKey);
     }
 }
