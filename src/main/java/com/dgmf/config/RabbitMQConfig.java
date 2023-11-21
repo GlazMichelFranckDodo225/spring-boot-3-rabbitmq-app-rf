@@ -36,4 +36,10 @@ public class RabbitMQConfig {
                 .to(exchange())
                 .with(routingKey);
     }
+
+    // Spring Boot Autoconfiguration will automatically configure the
+    // three following Beans for us :
+    //  - Spring Bean for RabbitMQ Connection Factory
+    //  - Spring Bean for RabbitMQ Template
+    //  - Spring Bean for RabbitMQ Admin
 }
